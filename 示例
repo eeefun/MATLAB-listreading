@@ -1,0 +1,17 @@
+list.txt:
+质量m/g	100.01	199.88	300.00	400.10
+形变y/mm 41.2	42.4	43.5	44.7	
+
+输出文件matlablist.txt:
+x=[100.01 199.88 300.00 400.10 ];
+y=[41.2 42.4 43.5 44.7 ];
+p=polyfit(x,y,1);
+xi=linspace(100.01,400.1,4);
+z=polyval(p,xi);
+plot(x,y,'x',xi,z,'-');
+xlabel('质量m/g');
+ylabel('形变y/mm');
+title('图1形变量随砝码质量变化');
+grid on
+
+输入MATLAB之后得到不错的图形
