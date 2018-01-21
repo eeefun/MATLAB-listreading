@@ -1,0 +1,64 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <stdlib.h>
+
+using namespace std;
+
+int main()
+{
+    ofstream o("matlablist.txt");
+    string name;
+    cout<<"please enter the title of the picture:"<<endl;
+    cin>>name;
+
+    ifstream a("list.txt",ios::in);
+    char ch=0;
+    int n=0;
+    while(ch!='\n'){
+        a.get(ch);
+        if(ch=='\t')n++;
+    }
+    a.close();
+
+    o<<"x=[";
+
+    ifstream b("list.txt",ios::in);
+    string s,sx,sy;
+    float x1;float xn;bool pd=1;bool pd2=1;
+    int i=0;
+    while(!b.eof()){
+        b>>s;
+
+        if(i!=0) o<<s<<" ";
+        else{
+            if(pd) sx=s;
+            else{
+                if(pd2){sy=s; pd2=0;}
+            }
+        }
+
+        if(i==1&&pd==1) x1=atof(s.c_str());
+        if(i==n&&pd==1) xn=atof(s.c_str());
+
+        if(i<n) i++;
+        else{
+            i=0;
+            if(pd){ o<<"];"<<endl<<"y=["; pd=0;}
+        }
+    }
+    b.close();
+
+      o<<"];"<<endl;
+    o<<"p=polyfit(x,y,1);"<<endl;
+    o<<"xi=linspace("<<x1<<","<<xn<<","<<n<<");"<<endl;
+    o<<"z=polyval(p,xi);"<<endl;
+    o<<"plot(x,y,'x',xi,z,'-');"<<endl;
+    o<<"xlabel('"<<sx<<"');"<<endl;
+    o<<"ylabel('"<<sy<<"');"<<endl;
+    o<<"title('"<<name<<"');"<<endl;
+    o<<"grid on";
+
+    o.close();
+    return 0;
+}
